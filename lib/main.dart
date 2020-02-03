@@ -1,4 +1,5 @@
 import 'package:demo_flutter_charts/basic_chart.dart';
+import 'package:demo_flutter_charts/dis_chart.dart';
 import 'package:demo_flutter_charts/min_max_chart.dart';
 import 'package:demo_flutter_charts/mix_chart.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -46,6 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Tab(
                 text: "Mix",
               ),
+              Tab(
+                text: "Disjoint",
+              ),
             ],
           ),
         ),
@@ -54,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
             BasicChart(),
             MinMaxChart(),
             MixChart(),
+            DisChart(),
           ],
         ),
       ),

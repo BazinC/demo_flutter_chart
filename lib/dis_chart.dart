@@ -1,46 +1,43 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class MixChart extends StatefulWidget {
-  MixChart({Key key}) : super(key: key);
+class DisChart extends StatefulWidget {
+  DisChart({Key key}) : super(key: key);
 
   @override
-  _MixChart createState() => _MixChart();
+  _DisChart createState() => _DisChart();
 }
 
-class _MixChart extends State<MixChart> {
+class _DisChart extends State<DisChart> {
   List<TimeSeriesData> tsdatasnow = [];
-  List<TimeSeriesData> tsdatanewsnow = [];
+  List<TimeSeriesData> tsdatatemp = [];
 
   @override
   void initState() {
     var random = Random();
     double val = (random.nextDouble() * 120) + 50;
-    double valNew = 0;
 
     for (int i = 12; i > 0; i--) {
       var date = DateTime.now().subtract(
           Duration(hours: (i * 12) - (3 * random.nextDouble()).toInt()));
-      if (random.nextDouble() > 0.75) {
-        valNew = (random.nextDouble() * 30) + 10;
-        tsdatanewsnow.add(TimeSeriesData(date, valNew));
-        val = val + valNew;
-      } else {
-        valNew = 0;
-        double fonte = (random.nextDouble() * 10);
-        val = val - fonte;
-      }
 
+      double evol = (random.nextDouble() * 10);
+      if (random.nextBool() == true) evol = evol * -1;
+      val = val + evol;
       tsdatasnow.add(TimeSeriesData(date, val));
+
+      double val2 = (random.nextDouble() * 20) - 15;
+      tsdatatemp.add(TimeSeriesData(date, val2));
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var seriesSnow = [
+    var seriesChart = [
       charts.Series<TimeSeriesData, DateTime>(
         id: 'snow',
         displayName: "Neige",
@@ -48,36 +45,41 @@ class _MixChart extends State<MixChart> {
         domainFn: (TimeSeriesData data, _) => data.time,
         measureFn: (TimeSeriesData data, _) => data.data,
         data: tsdatasnow,
-      ),
+      )..setAttribute(charts.measureAxisIdKey, 'axis 1'),
       charts.Series<TimeSeriesData, DateTime>(
-        id: 'SnowNewHeight',
-        displayName: "Neige fraîche",
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        id: 'Temperature',
+        displayName: "Température",
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         domainFn: (TimeSeriesData data, _) => data.time,
         measureFn: (TimeSeriesData data, _) => data.data,
-        data: tsdatanewsnow,
-      )..setAttribute(charts.rendererIdKey, 'customBar'),
+        data: tsdatatemp,
+      )..setAttribute(charts.measureAxisIdKey, 'axis 2'),
     ];
 
     return Container(
       child: charts.TimeSeriesChart(
-        seriesSnow,
+        seriesChart,
         animate: true,
         animationDuration: Duration(milliseconds: 800),
         behaviors: [
           charts.SeriesLegend(
             position: charts.BehaviorPosition.bottom,
             showMeasures: true,
-            horizontalFirst: false,
+            horizontalFirst: true,
             measureFormatter: (num value) {
-              return value == null ? '-' : '${value.toStringAsFixed(0)}cm';
+              return value == null ? '' : '${value.toStringAsFixed(0)}';
             },
           ),
         ],
+        disjointMeasureAxes:
+            LinkedHashMap<String, charts.NumericAxisSpec>.from({
+          'axis 1': charts.NumericAxisSpec(),
+          'axis 2': charts.NumericAxisSpec(),
+        }),
         layoutConfig: charts.LayoutConfig(
             leftMarginSpec: charts.MarginSpec.fixedPixel(30),
-            topMarginSpec: charts.MarginSpec.fixedPixel(10),
-            rightMarginSpec: charts.MarginSpec.fixedPixel(10),
+            topMarginSpec: charts.MarginSpec.fixedPixel(30),
+            rightMarginSpec: charts.MarginSpec.fixedPixel(30),
             bottomMarginSpec: charts.MarginSpec.fixedPixel(10)),
         domainAxis: charts.DateTimeAxisSpec(
           tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
@@ -85,13 +87,6 @@ class _MixChart extends State<MixChart> {
                 format: 'd', transitionFormat: 'dd/MM'),
           ),
         ),
-        customSeriesRenderers: [
-          charts.BarRendererConfig(
-              // ID used to link series to this renderer.
-              customRendererId: 'customBar',
-              cornerStrategy: const charts.ConstCornerStrategy(30),
-              fillPattern: charts.FillPatternType.forwardHatch),
-        ],
       ),
     );
   }
