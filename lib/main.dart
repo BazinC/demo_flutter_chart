@@ -1,3 +1,6 @@
+import 'package:demo_flutter_charts/basic_chart.dart';
+import 'package:demo_flutter_charts/min_max_chart.dart';
+import 'package:demo_flutter_charts/mix_chart.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -27,11 +30,33 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                text: "Basic",
+              ),
+              Tab(
+                text: "Min/max",
+              ),
+              Tab(
+                text: "Mix",
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            BasicChart(),
+            MinMaxChart(),
+            MixChart(),
+          ],
+        ),
       ),
-      body: Container(),
     );
   }
 }
