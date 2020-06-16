@@ -5,14 +5,16 @@ import 'package:demo_flutter_charts/time_series_data.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class DisChart extends StatefulWidget {
-  DisChart({Key key}) : super(key: key);
+class BezierChart extends StatefulWidget {
+  BezierChart({Key key, this.isSmooth}) : super(key: key);
+
+  final bool isSmooth;
 
   @override
-  _DisChartState createState() => _DisChartState();
+  _BezierChart createState() => _BezierChart();
 }
 
-class _DisChartState extends State<DisChart> {
+class _BezierChart extends State<BezierChart> {
   List<TimeSeriesData> tsdatasnow = [];
   List<TimeSeriesData> tsdatatemp = [];
 
@@ -59,7 +61,10 @@ class _DisChartState extends State<DisChart> {
     return Container(
       child: charts.TimeSeriesChart(
         seriesChart,
-        animate: true,
+        animate: false,
+        defaultRenderer: charts.LineRendererConfig(
+          smoothLine: widget.isSmooth,
+        ),
         animationDuration: Duration(milliseconds: 800),
         behaviors: [
           charts.SeriesLegend(
@@ -86,6 +91,46 @@ class _DisChartState extends State<DisChart> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class BezierChartView extends StatefulWidget {
+  const BezierChartView({Key key}) : super(key: key);
+
+  @override
+  _BezierChartViewState createState() => _BezierChartViewState();
+}
+
+class _BezierChartViewState extends State<BezierChartView> {
+  bool isSmooth = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('smooth: '),
+            Switch(
+              value: isSmooth,
+              onChanged: (value) {
+                setState(() {
+                  isSmooth = value;
+                });
+              },
+              activeTrackColor: Colors.lightGreenAccent,
+              activeColor: Colors.green,
+            ),
+          ],
+        ),
+        Expanded(
+          child: BezierChart(
+            isSmooth: isSmooth,
+          ),
+        )
+      ],
     );
   }
 }

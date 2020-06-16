@@ -7,10 +7,10 @@ class MinMaxChart extends StatefulWidget {
   MinMaxChart({Key key}) : super(key: key);
 
   @override
-  _MinMaxChart createState() => _MinMaxChart();
+  _MinMaxChartState createState() => _MinMaxChartState();
 }
 
-class _MinMaxChart extends State<MinMaxChart> {
+class _MinMaxChartState extends State<MinMaxChart> {
   List<TimeSeriesData> tsdatatemperature = [];
 
   @override
@@ -18,11 +18,9 @@ class _MinMaxChart extends State<MinMaxChart> {
     var random = Random();
 
     for (int i = 0; i < 12; i++) {
-      var date = DateTime.now().subtract(
-          Duration(hours: (i * 12) - (3 * random.nextDouble()).toInt()));
+      var date = DateTime.now().subtract(Duration(hours: (i * 12) - (3 * random.nextDouble()).toInt()));
       double val = (random.nextDouble() * 20) - 10;
-      tsdatatemperature.add(TimeSeriesData(date, val,
-          val - (8 * random.nextDouble()), val + (8 * random.nextDouble())));
+      tsdatatemperature.add(TimeSeriesData(date, val, val - (8 * random.nextDouble()), val + (8 * random.nextDouble())));
     }
     super.initState();
   }
@@ -63,9 +61,7 @@ class _MinMaxChart extends State<MinMaxChart> {
             rightMarginSpec: charts.MarginSpec.fixedPixel(10),
             bottomMarginSpec: charts.MarginSpec.fixedPixel(10)),
         domainAxis: charts.DateTimeAxisSpec(
-            tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
-                day: charts.TimeFormatterSpec(
-                    format: 'd', transitionFormat: 'dd/MM'))),
+            tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(day: charts.TimeFormatterSpec(format: 'd', transitionFormat: 'dd/MM'))),
       ),
     );
   }

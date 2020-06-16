@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:demo_flutter_charts/time_series_data.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -7,10 +8,10 @@ class BasicChart extends StatefulWidget {
   BasicChart({Key key}) : super(key: key);
 
   @override
-  _BasicChart createState() => _BasicChart();
+  _BasicChartState createState() => _BasicChartState();
 }
 
-class _BasicChart extends State<BasicChart> {
+class _BasicChartState extends State<BasicChart> {
   List<TimeSeriesData> tsdatatemperature = [];
   List<TimeSeriesData> tsdatatemperatureground = [];
 
@@ -19,8 +20,7 @@ class _BasicChart extends State<BasicChart> {
     var random = Random();
 
     for (int i = 0; i < 12; i++) {
-      var date = DateTime.now().subtract(
-          Duration(hours: (i * 12) - (3 * random.nextDouble()).toInt()));
+      var date = DateTime.now().subtract(Duration(hours: (i * 12) - (3 * random.nextDouble()).toInt()));
       double val = (random.nextDouble() * 30) - 15;
       tsdatatemperature.add(TimeSeriesData(date, val));
 
@@ -72,16 +72,8 @@ class _BasicChart extends State<BasicChart> {
             rightMarginSpec: charts.MarginSpec.fixedPixel(10),
             bottomMarginSpec: charts.MarginSpec.fixedPixel(10)),
         domainAxis: charts.DateTimeAxisSpec(
-            tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
-                day: charts.TimeFormatterSpec(
-                    format: 'd', transitionFormat: 'dd/MM'))),
+            tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(day: charts.TimeFormatterSpec(format: 'd', transitionFormat: 'dd/MM'))),
       ),
     );
   }
-}
-
-class TimeSeriesData {
-  final DateTime time;
-  final double data;
-  TimeSeriesData(this.time, this.data);
 }

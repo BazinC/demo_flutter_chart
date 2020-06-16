@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:demo_flutter_charts/time_series_data.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -7,10 +8,10 @@ class MixChart extends StatefulWidget {
   MixChart({Key key}) : super(key: key);
 
   @override
-  _MixChart createState() => _MixChart();
+  _MixChartState createState() => _MixChartState();
 }
 
-class _MixChart extends State<MixChart> {
+class _MixChartState extends State<MixChart> {
   List<TimeSeriesData> tsdatasnow = [];
   List<TimeSeriesData> tsdatanewsnow = [];
 
@@ -21,8 +22,7 @@ class _MixChart extends State<MixChart> {
     double valNew = 0;
 
     for (int i = 12; i > 0; i--) {
-      var date = DateTime.now().subtract(
-          Duration(hours: (i * 12) - (3 * random.nextDouble()).toInt()));
+      var date = DateTime.now().subtract(Duration(hours: (i * 12) - (3 * random.nextDouble()).toInt()));
       if (random.nextDouble() > 0.75) {
         valNew = (random.nextDouble() * 30) + 10;
         tsdatanewsnow.add(TimeSeriesData(date, valNew));
@@ -81,8 +81,7 @@ class _MixChart extends State<MixChart> {
             bottomMarginSpec: charts.MarginSpec.fixedPixel(10)),
         domainAxis: charts.DateTimeAxisSpec(
           tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
-            day: charts.TimeFormatterSpec(
-                format: 'd', transitionFormat: 'dd/MM'),
+            day: charts.TimeFormatterSpec(format: 'd', transitionFormat: 'dd/MM'),
           ),
         ),
         customSeriesRenderers: [
@@ -95,13 +94,4 @@ class _MixChart extends State<MixChart> {
       ),
     );
   }
-}
-
-class TimeSeriesData {
-  final DateTime time;
-  final double data;
-  TimeSeriesData(
-    this.time,
-    this.data,
-  );
 }
