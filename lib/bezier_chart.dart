@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:demo_flutter_charts/time_series_data.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter_cf/charts_flutter_cf.dart' as charts;
 
 class BezierChart extends StatefulWidget {
   BezierChart({Key key, this.isSmooth}) : super(key: key);
@@ -62,9 +62,10 @@ class _BezierChart extends State<BezierChart> {
       child: charts.TimeSeriesChart(
         seriesChart,
         animate: false,
-        defaultRenderer: charts.LineRendererConfig(
-          smoothLine: widget.isSmooth,
-        ),
+        // disabled for now, not available yet on community version
+        // defaultRenderer: charts.LineRendererConfig(
+        //   smoothLine: widget.isSmooth,
+        // ),
         animationDuration: Duration(milliseconds: 800),
         behaviors: [
           charts.SeriesLegend(

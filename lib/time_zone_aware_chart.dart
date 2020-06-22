@@ -3,8 +3,9 @@ import 'dart:math';
 
 import 'package:demo_flutter_charts/time_series_data.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:charts_common/common.dart' as common;
+import 'package:charts_flutter_cf/charts_flutter_cf.dart' as charts;
+
+// import 'package:charts_common_cf/charts_common_cf.dart' as common;
 
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
@@ -63,8 +64,9 @@ class _TimeZoneAwareChartState extends State<TimeZoneAwareChart> {
             leftMarginSpec: charts.MarginSpec.fixedPixel(30),
             topMarginSpec: charts.MarginSpec.fixedPixel(30),
             rightMarginSpec: charts.MarginSpec.fixedPixel(30),
-            bottomMarginSpec: charts.MarginSpec.fixedPixel(10)),
-        dateTimeFactory: common.TimeZoneAwareDateTimeFactory(widget.location),
+            bottomMarginSpec: charts.MarginSpec.fixedPixel(30)),
+        // disabled for now, not available yet on community version
+        // dateTimeFactory: common.TimeZoneAwareDateTimeFactory(widget.location),
       ),
     );
   }
@@ -113,46 +115,64 @@ class _TimeZoneAwareChartViewState extends State<TimeZoneAwareChartView> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Timezone: '),
-            DropdownButton<tz.Location>(
-                value: location,
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                ),
-                onChanged: (tz.Location newValue) {
-                  setState(() {
-                    location = newValue;
-                  });
-                },
-                items: availableLocations
-                    .map(
-                      (location) => DropdownMenuItem<tz.Location>(
-                          value: location,
-                          child: Text(
-                              'UTC${(location.currentTimeZone.offset < 0) ? '' : '+'}${location.currentTimeZone.offset / millisecondsInAnHour} ${location.name}')),
-                    )
-                    .toList())
-          ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Timezone: '),
+              Flexible(
+                child: DropdownButton<tz.Location>(
+                    isExpanded: true,
+                    value: location,
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                    ),
+                    onChanged: (tz.Location newValue) {
+                      setState(() {
+                        location = newValue;
+                      });
+                    },
+                    items: availableLocations
+                        .map(
+                          (location) => DropdownMenuItem<tz.Location>(
+                              value: location,
+                              child: Text(
+                                'UTC${(location.currentTimeZone.offset < 0) ? '' : '+'}${location.currentTimeZone.offset / millisecondsInAnHour} ${location.name}',
+                                textAlign: TextAlign.left,
+                              )),
+                        )
+                        .toList()),
+              )
+            ],
+          ),
         ),
-        Slider(
-          value: offsetTimezone.toDouble(),
-          onChanged: (newValue) {
-            print(newValue);
-            setState(() {
-              offsetTimezone = newValue.floor();
-              location = availableLocations.firstWhere((loc) => loc.currentTimeZone.offset == offsetTimezone, orElse: () => location);
-            });
-          },
-          min: -11.0 * millisecondsInAnHour,
-          max: 14.0 * millisecondsInAnHour,
-          divisions: 25,
-          label: '${(offsetTimezone / millisecondsInAnHour).toDouble()}',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('UTC ofsset: '),
+              Expanded(
+                child: Slider(
+                  value: offsetTimezone.toDouble(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      offsetTimezone = newValue.floor();
+                      location = availableLocations.firstWhere((loc) => loc.currentTimeZone.offset == offsetTimezone, orElse: () => location);
+                    });
+                  },
+                  min: -11.0 * millisecondsInAnHour,
+                  max: 14.0 * millisecondsInAnHour,
+                  divisions: 25,
+                  label: '${(offsetTimezone / millisecondsInAnHour).toDouble()}',
+                ),
+              ),
+            ],
+          ),
         ),
         Expanded(
           child: TimeZoneAwareChart(

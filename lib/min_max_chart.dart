@@ -1,7 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+// import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter_cf/charts_flutter_cf.dart' as charts;
 
 class MinMaxChart extends StatefulWidget {
   MinMaxChart({Key key}) : super(key: key);

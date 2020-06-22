@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:demo_flutter_charts/time_series_data.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter_cf/charts_flutter_cf.dart' as charts;
 
 class BasicChart extends StatefulWidget {
   BasicChart({Key key}) : super(key: key);

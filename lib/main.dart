@@ -1,5 +1,6 @@
 import 'package:demo_flutter_charts/basic_chart.dart';
 import 'package:demo_flutter_charts/bezier_chart.dart';
+import 'package:demo_flutter_charts/custom_legend_chart.dart';
 import 'package:demo_flutter_charts/dis_chart.dart';
 import 'package:demo_flutter_charts/min_max_chart.dart';
 import 'package:demo_flutter_charts/mix_chart.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Demo Flutter Chart',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -40,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
+      length: 7,
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -64,18 +66,24 @@ class _MyHomePageState extends State<MyHomePage> {
               Tab(
                 text: "TimeZone",
               ),
+              Tab(
+                text: "Legend",
+              ),
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            BasicChart(),
-            MinMaxChart(),
-            MixChart(),
-            DisChart(),
-            BezierChartView(),
-            TimeZoneAwareChartView(),
-          ],
+        body: SafeArea(
+          child: TabBarView(
+            children: [
+              BasicChart(),
+              MinMaxChart(),
+              MixChart(),
+              DisChart(),
+              BezierChartView(),
+              TimeZoneAwareChartView(),
+              CustomLegendChart(),
+            ],
+          ),
         ),
       ),
     );

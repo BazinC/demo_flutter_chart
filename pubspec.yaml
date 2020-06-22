@@ -23,9 +23,16 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  charts_flutter:
-    # git: https://github.com/amdocs-iot-mobile/charts_flutter.git
+  # charts_flutter:
+  #   git: https://github.com/amdocs-iot-mobile/charts_flutter.git
+
+  charts_flutter_cf:
+  # charts_flutter_cf: ^0.10.2
+      path: submodules/charts_cf/charts_flutter_cf
+
   timezone: ^0.5.7
+  auto_size_text: ^2.1.0
+
 
 
 dev_dependencies:

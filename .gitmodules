@@ -1,0 +1,3 @@
+[submodule "submodules/charts_cf"]
+	path = submodules/charts_cf
+	url = https://github.com/exafree/charts_cf.git
